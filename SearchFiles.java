@@ -1,5 +1,24 @@
-	  
-	  public static void searchIndex(String indexPath, String queryTerms, int hits ) throws IOException, ParseException {
+import java.io.File;
+import java.util.*;
+import java.io.IOException;
+import org.apache.lucene.analysis.Analyzer;
+import org.apache.lucene.analysis.en.EnglishAnalyzer;
+import java.nio.file.Paths;
+import org.apache.lucene.document.TextField;
+import org.apache.lucene.index.DirectoryReader;
+import org.apache.lucene.index.IndexReader;
+import org.apache.lucene.queryparser.classic.ParseException;
+import org.apache.lucene.queryparser.classic.QueryParser;
+import org.apache.lucene.search.IndexSearcher;
+import org.apache.lucene.search.Query;
+import org.apache.lucene.search.TopScoreDocCollector;
+import org.apache.lucene.search.ScoreDoc;
+import org.apache.lucene.store.Directory;
+import org.apache.lucene.store.FSDirectory;	
+
+public class Index {	  
+
+          public static void searchIndex(String indexPath, String queryTerms, int hits ) throws IOException, ParseException {
 		  
 
 		  Directory index = FSDirectory.open(Paths.get(indexPath));
@@ -36,4 +55,4 @@
 
 		  
 	  }
-	  
+}
