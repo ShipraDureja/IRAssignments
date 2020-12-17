@@ -1,8 +1,15 @@
 package com.lucene;
 
 import java.io.File;
+import java.io.FileReader;
+import java.io.BufferedReader;
+import org.apache.lucene.index.DirectoryReader;
 import java.io.IOException;
-
+import org.apache.lucene.analysis.Analyzer;
+import org.apache.lucene.analysis.en.EnglishAnalyzer;
+import org.apache.lucene.document.Document;
+import org.apache.lucene.document.Field;
+import org.apache.lucene.document.TextField;
 import org.apache.lucene.index.IndexWriter;
 import org.apache.lucene.index.IndexWriterConfig;
 import org.apache.lucene.store.Directory;
