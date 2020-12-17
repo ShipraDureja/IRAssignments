@@ -1,5 +1,6 @@
 	  
 	  public static void searchIndex(String indexPath, String queryTerms, int hits ) throws IOException, ParseException {
+		  
 
 		  Directory index = FSDirectory.open(Paths.get(indexPath));
 		  
@@ -11,10 +12,10 @@
 
 		  Analyzer analyzer = new EnglishAnalyzer();
 	  
-	    QueryParser queryParser = new QueryParser("DocContents",analyzer); 
-	    Query query = queryParser.parse(queryTerms);
+	          QueryParser queryParser = new QueryParser("DocContents",analyzer); 
+	          Query query = queryParser.parse(queryTerms);
 
-	    indexSearcher.search(query, collector);
+	          indexSearcher.search(query, collector);
 			  
 		  ScoreDoc[] scoreHits =collector.topDocs().scoreDocs;
 			  
