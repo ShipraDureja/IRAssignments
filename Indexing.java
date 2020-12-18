@@ -38,9 +38,11 @@ public class Indexing {
             System.out.println(end.getTime() - start.getTime() + " total milliseconds");
         } catch (IOException e) {
             System.out.println("Error in Indexing Class");
-            e.printStackTrace();
-            System.out.println(e.getMessage());
+            System.out.println("Error in Search Query");
+            //e.printStackTrace();
+            //System.out.println(e.getMessage());
         }
+
     }
 
     public static void indexDirectory(final IndexWriter indexWriter, Path dataDir) throws IOException {
