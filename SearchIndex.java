@@ -43,7 +43,6 @@ public class SearchIndex {
                 Query query = queryParser.parse(queryInput);
                 TopDocs docs = searcher.search(query, num_hits);
                 ScoreDoc[] hits = docs.scoreDocs;
-
                 if (hits != null && hits.length > 0) {
                     System.out.println("Total" + hits.length + " documents found");
                     System.out.println("______________Top " + hits.length + " Relevant Documents______________ ");
@@ -75,6 +74,7 @@ public class SearchIndex {
         }
         catch (Exception e) {
             System.out.println("Error in Search Index Class");
+            e.printStackTrace();
         }
     }
 
