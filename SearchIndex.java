@@ -31,8 +31,9 @@ public class SearchIndex {
         MultiFieldQueryParser queryParser = new MultiFieldQueryParser(new String[]{"contents", "title", "lastmodified"}, analyzer);
 
         String queryInput = "";
-        while (!queryInput.equalsIgnoreCase("q")) {
-            System.out.println("Enter query: ");
+        int flag = 0;
+        while (flag!=1) {
+            System.out.println("\nEnter query: ");
             queryInput = bReader.readLine();
             if (queryInput == null && queryInput.length() == 0) {
                 break;
@@ -57,6 +58,17 @@ public class SearchIndex {
                     }
                 }
             }
+            else
+                System.out.println("No results found\n");
+
+            System.out.println("Do you want to continue searching?");
+            System.out.print("Press y to continue:  ");
+            String UserInput = bReader.readLine();
+            if(UserInput.equalsIgnoreCase("y"))
+                flag = 0;
+            else
+                flag = 1;
+
         }
     }
 }
