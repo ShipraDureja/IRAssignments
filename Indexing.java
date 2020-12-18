@@ -81,7 +81,8 @@ public class Indexing {
             Field pathField = new StringField("path", dataDir.toString(), Field.Store.YES);
             doc.add(pathField);
 
-            doc.add(new LongPoint("lastmodified", lastModified));
+            String lastMod = new SimpleDateFormat("dd MMM yyyy HH:mm:ss ").format(lastModified);
+            doc.add(new StringField("lastmodified", lastMod, Field.Store.YES));
             doc.add(new TextField("contents", new BufferedReader(new InputStreamReader(stream, StandardCharsets.UTF_8))));
 
             System.out.println("adding " + dataDir);
