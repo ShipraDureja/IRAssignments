@@ -36,32 +36,32 @@ public class SearchIndex {
             while (flag!=1) {
                 System.out.println("\nEnter query: ");
                 queryInput = bReader.readLine();
-                if (queryInput == null && queryInput.length() == 0) {
-                    break;
-                }
-                System.out.println("Enter number of top docs:");
-                Query query = queryParser.parse(queryInput);
-                TopDocs docs = searcher.search(query, num_hits);
-                ScoreDoc[] hits = docs.scoreDocs;
-                if (hits != null && hits.length > 0) {
-                    System.out.println("Total" + hits.length + " documents found");
-                    System.out.println("______________Top " + hits.length + " Relevant Documents______________ ");
-                    for (int i = 0; i < hits.length; ++i) {
-                        int docId = hits[i].doc;
-                        Document doc = searcher.doc(docId);
-                        String filepath = doc.get("path");
-                        System.out.println("\nRank: " + (i + 1) + "\nPath: " + filepath + " \nLast Modified: " + doc.get("lastmodified") + "\nRelevance Score: " + hits[i].score);
-                        File file = new File(filepath);
-                        String filename = file.getName();
-                        if (filename.endsWith(".htm") || filename.endsWith(".html")) {
-                            System.out.println("Title: " + doc.get("title"));
-                            System.out.println("Summary: " + doc.get("summary"));
+                if (queryInput.matches("^[a-zA-Z0-9_ ]*$") == true && queryInput.trim().isEmpty() == false) {
+                    Query query = queryParser.parse(queryInput);
+                    TopDocs docs = searcher.search(query, num_hits);
+                    ScoreDoc[] hits = docs.scoreDocs;
+                    if (hits != null && hits.length > 0) {
+                        System.out.println("Total" + hits.length + " documents found");
+                        System.out.println("______________Top " + hits.length + " Relevant Documents______________ ");
+                        for (int i = 0; i < hits.length; ++i) {
+                            int docId = hits[i].doc;
+                            Document doc = searcher.doc(docId);
+                            String filepath = doc.get("path");
+                            System.out.println("\nRank: " + (i + 1) + "\nPath: " + filepath + " \nLast Modified: " + doc.get("lastmodified") + "\nRelevance Score: " + hits[i].score);
+                            File file = new File(filepath);
+                            String filename = file.getName();
+                            if (filename.endsWith(".htm") || filename.endsWith(".html")) {
+                                System.out.println("Title: " + doc.get("title"));
+                                System.out.println("Summary: " + doc.get("summary"));
+                            }
                         }
-                    }
-                } else
-                    System.out.println("No results found\n");
-                System.out.println("______________________________________________________\n\n");
-
+                    } else
+                        System.out.println("No results found\n");
+                    System.out.println("______________________________________________________\n\n");
+                }
+                else{
+                    System.out.println("Wrong Input\n");
+                }
                 System.out.println("Do you want to continue searching?");
                 System.out.print("Press y to continue:  ");
                 String UserInput = bReader.readLine();
