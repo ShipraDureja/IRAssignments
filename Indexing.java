@@ -16,6 +16,7 @@ import org.apache.lucene.index.IndexWriterConfig;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
 import org.jsoup.Jsoup;
+import java.text.SimpleDateFormat;
 
 public class Indexing {
     public static void indexing(String inputPath, String indexPath) {
@@ -36,6 +37,8 @@ public class Indexing {
             Date end = new Date();
             System.out.println(end.getTime() - start.getTime() + " total milliseconds");
         } catch (IOException e) {
+            System.out.println("Error in Indexing Class");
+            e.printStackTrace();
             System.out.println(e.getMessage());
         }
     }
@@ -53,7 +56,7 @@ public class Indexing {
                             // don't index files that can't be read.
                         }
                     } else {
-                        System.out.println(file.toString() + "This type of file will not be indexed");
+                        System.out.println("This type of file will not be indexed" + file.toString());
                     }
                     return FileVisitResult.CONTINUE;
                 }
@@ -78,17 +81,24 @@ public class Indexing {
                 String summary = String.valueOf(jSoupdoc.select("summary").text());
                 doc.add(new StringField("summary", summary, Field.Store.YES));
             }
-            Field pathField = new StringField("path", dataDir.toString(), Field.Store.YES);
-            doc.add(pathField);
+            try {
+                Field pathField = new StringField("path", dataDir.toString(), Field.Store.YES);
+                doc.add(pathField);
 
-            String lastMod = new SimpleDateFormat("dd MMM yyyy HH:mm:ss ").format(lastModified);
-            doc.add(new StringField("lastmodified", lastMod, Field.Store.YES));
-            doc.add(new TextField("contents", new BufferedReader(new InputStreamReader(stream, StandardCharsets.UTF_8))));
+                String lastMod = new SimpleDateFormat("dd MMM yyyy HH:mm:ss ").format(lastModified);
+                doc.add(new StringField("lastmodified", lastMod, Field.Store.YES));
+                doc.add(new TextField("contents", new BufferedReader(new InputStreamReader(stream, StandardCharsets.UTF_8))));
 
-            System.out.println("adding " + dataDir);
-            writer.addDocument(doc);
+                System.out.println("adding " + dataDir);
+                writer.addDocument(doc);
+            }
+            catch(Exception e) {
+                System.out.println("Error in Indexing Class - in indexDocument module");
+                e.printStackTrace();
+                System.out.println(e.getMessage());
+
+                }
+            }
         }
-    }
 }
-
 
