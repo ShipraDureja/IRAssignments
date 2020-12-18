@@ -1,4 +1,5 @@
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
@@ -20,9 +21,8 @@ import org.apache.lucene.store.FSDirectory;
 /** Simple command-line based search. */
 public class SearchIndex {
 
-    public static void searching(String inputPath, String indexPath) throws Exception {
+    public static void searching(String indexPath) throws Exception {
 
-        final Path dataDir = Paths.get(inputPath);
         IndexReader reader = DirectoryReader.open(FSDirectory.open(Paths.get(indexPath)));
         IndexSearcher searcher = new IndexSearcher(reader);
         Analyzer analyzer = new EnglishAnalyzer();
@@ -47,11 +47,13 @@ public class SearchIndex {
                 for (int i = 0; i < hits.length; ++i) {
                     int docId = hits[i].doc;
                     Document doc = searcher.doc(docId);
-                    System.out.println("Rank: " + (i + 1) + "\nPath: " + doc.get("path") + " \nLast Modified: " + doc.get("lastmodified") + "\nRelevance Score: " + hits[i].score);
-                    String fileLowerCaseName = dataDir.toString().toLowerCase();
-                    if (fileLowerCaseName.endsWith(".htm") || fileLowerCaseName.endsWith(".html")) {
-                        System.out.println("\nTitle: " + doc.get("title"));
-                        System.out.println("\nSummary: " + doc.get("summary"));
+                    String filepath = doc.get("path");
+                    System.out.println("Rank: " + (i + 1) + "\nPath: " + filepath + " \nLast Modified: " + doc.get("lastmodified") + "\nRelevance Score: " + hits[i].score);
+                    File file = new File(filepath);
+                    String filename = file.getName();
+                    if (filename.endsWith(".htm") || filename.endsWith(".html")) {
+                        System.out.println("Title: " + doc.get("title"));
+                        System.out.println("Summary: " + doc.get("summary"));
                     }
                 }
             }

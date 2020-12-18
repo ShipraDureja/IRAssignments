@@ -4,7 +4,7 @@ public class Main {
         String inputPath = "C:\\Users\\Shipra Dureja\\Downloads\\documents";
         String indexPath = "index";
         Indexing.indexing(inputPath, indexPath);
-        SearchIndex.searching(inputPath, indexPath);
+        SearchIndex.searching(indexPath);
         /*String inputPath = null;
         String indexPath = "index";
         if (args.length != 1) {
@@ -12,9 +12,9 @@ public class Main {
         } else {
             inputPath = args[0];
             if (inputPath != null) {
-                Indexing.main(inputPath, indexPath);
+                Indexing.indexing(inputPath, indexPath);
             }try {
-                SearchIndex.main(indexPath);
+                SearchIndex.searching(indexPath);
             } catch (Exception e) {
                 e.printStackTrace();
             }
