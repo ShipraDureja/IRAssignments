@@ -11,6 +11,7 @@ import org.apache.lucene.document.Document;
 import org.apache.lucene.index.DirectoryReader;
 import org.apache.lucene.index.IndexReader;
 import org.apache.lucene.queryparser.classic.MultiFieldQueryParser;
+import org.apache.lucene.queryparser.classic.QueryParser;
 import org.apache.lucene.search.IndexSearcher;
 import org.apache.lucene.search.Query;
 import org.apache.lucene.search.ScoreDoc;
@@ -29,6 +30,7 @@ public class SearchIndex {
 
             BufferedReader bReader = new BufferedReader(new InputStreamReader(System.in, StandardCharsets.UTF_8));
             MultiFieldQueryParser queryParser = new MultiFieldQueryParser(new String[]{"contents", "title"}, analyzer);
+            //QueryParser queryParser = new QueryParser("contents", analyzer);
 
             String queryInput = "";
             int flag = 0;
@@ -39,7 +41,7 @@ public class SearchIndex {
                 queryInput = bReader.readLine();
                 if (queryInput.trim().isEmpty() == false) {
                     try {
-                        query = queryParser.parse(queryInput);
+                        query = queryParser.parse(QueryParser.escape(queryInput));
                         TopDocs docs = searcher.search(query, num_hits);
                         ScoreDoc[] hits = docs.scoreDocs;
                         if (hits != null && hits.length > 0) {
@@ -61,6 +63,7 @@ public class SearchIndex {
                             System.out.println("No results found\n");
                         System.out.println("______________________________________________________\n\n");
                     }
+
                     catch(Exception e){
                         System.out.println("Wrong Input");
                     }
