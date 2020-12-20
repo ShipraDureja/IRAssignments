@@ -29,8 +29,8 @@ public class SearchIndex {
             Analyzer analyzer = new EnglishAnalyzer();
 
             BufferedReader bReader = new BufferedReader(new InputStreamReader(System.in, StandardCharsets.UTF_8));
-            MultiFieldQueryParser queryParser = new MultiFieldQueryParser(new String[]{"contents", "title"}, analyzer);
-            //QueryParser queryParser = new QueryParser("contents", analyzer);
+//          MultiFieldQueryParser queryParser = new MultiFieldQueryParser(new String[]{"contents", "title"}, analyzer);
+            QueryParser queryParser = new QueryParser("contents", analyzer);
 
             String queryInput = "";
             int flag = 0;
