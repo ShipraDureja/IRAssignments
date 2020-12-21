@@ -1,4 +1,5 @@
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
@@ -32,10 +33,15 @@ public class Main {
             } 
             try {
             	if (performIndexing) {
-                	//Index input folder
-                	Indexing.indexing(inputPath, indexPath);
-                	//Query over indexed files
-                	SearchIndex.searching(indexPath);
+            		//Check if the given path exists. If it does not exist gives an error message
+            		if (!(new File(inputPath)).exists()) {
+            		      System.out.println("Path " + inputPath +" does not exist.");
+            		}else {
+	                	//Index input folder
+	                	Indexing.indexing(inputPath, indexPath);
+	                	//Query over indexed files
+	                	SearchIndex.searching(indexPath);
+            		}
             	}
     		} catch (Exception e) {
     			System.out.println("An error was encounter during indexing process. Error:" + e.getMessage());

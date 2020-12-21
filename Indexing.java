@@ -19,32 +19,42 @@ import org.jsoup.Jsoup;
 import java.text.SimpleDateFormat;
 
 public class Indexing {
+	/*
+	 * Method that has as input inputPath and indexPath. It creates a index for all of the files in the inputPath and all 
+	 * subfolders. 
+	 * */
     public static void indexing(String inputPath, String indexPath) {
 
         final Path dataDir = Paths.get(inputPath);
         Date start = new Date();
         try {
-            Directory index = FSDirectory.open(Paths.get(indexPath));
+        	Directory index = FSDirectory.open(Paths.get(indexPath));
             Analyzer analyzer = new EnglishAnalyzer();
-
             IndexWriterConfig indexWriterConfig = new IndexWriterConfig(analyzer);
             indexWriterConfig.setOpenMode(OpenMode.CREATE);
+            //Create an indexWriter with the english analyzer
             IndexWriter indexWriter = new IndexWriter(index, indexWriterConfig);
+            //Call a function to index the documents inside the given folder using the created indexWriter 
             indexDirectory(indexWriter, dataDir);
-
+            //Close the index
             indexWriter.close();
-
+            //Print the amount of time spent on the index
             Date end = new Date();
             System.out.println(end.getTime() - start.getTime() + " total milliseconds");
         } catch (IOException e) {
-            System.out.println("Error in Indexing Class");
-            System.out.println("Error in Search Query");
+            System.out.println("Error in Indexing Class: ");
+            System.out.println(e.getMessage());
             //e.printStackTrace();
             //System.out.println(e.getMessage());
         }
 
     }
 
+    /*
+	 * Method that iterates over the folder given for the user for indexing and check whether the files inside the folder and 
+	 * subfolders are text or html files (.txt,.html,.htm). 
+	 * If the files are accepted then it calls the function indexDocument to index the file. Otherwise, It will just display a message 
+	 * */
     public static void indexDirectory(final IndexWriter indexWriter, Path dataDir) throws IOException {
         if (Files.isDirectory(dataDir)) {
             Files.walkFileTree(dataDir, new SimpleFileVisitor<Path>() {
@@ -74,6 +84,7 @@ public class Indexing {
             Document doc = new Document();
 
             String fileLowerCaseName = dataDir.toString().toLowerCase();
+            //In case of html files. It uses the jSoup library for parse title and summary fields
             if (fileLowerCaseName.endsWith(".htm") || fileLowerCaseName.endsWith(".html")) {
                 String file = new String(Files.readAllBytes(dataDir));
                 org.jsoup.nodes.Document jSoupdoc = Jsoup.parse(file, "UTF-8");
@@ -84,6 +95,7 @@ public class Indexing {
                 doc.add(new StringField("summary", summary, Field.Store.YES));
             }
             try {
+            	//For both text files and html files, it includes in the Index the path, content and last modified date
                 Field pathField = new StringField("path", dataDir.toString(), Field.Store.YES);
                 doc.add(pathField);
 
